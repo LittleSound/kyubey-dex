@@ -1,3 +1,4 @@
+using Andoromeda.Kyubey.Dex.Extensions;
 using Andoromeda.Kyubey.Dex.Hubs;
 using Andoromeda.Kyubey.Dex.Middlewares;
 using Andoromeda.Kyubey.Models;
@@ -15,7 +16,8 @@ namespace Andoromeda.Kyubey.Dex
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc();
-            services.AddConfiguration(out var config, "appsettings");
+            services.AddConfiguration2(out var config, "appsettings");
+
             services.AddDbContext<KyubeyContext>(x => x.UseMySql(config["MySql"]));
             services.AddSwaggerGen(x =>
             {
@@ -23,7 +25,7 @@ namespace Andoromeda.Kyubey.Dex
                 x.DocInclusionPredicate((docName, apiDesc) => apiDesc.HttpMethod != null);
                 x.DescribeAllEnumsAsStrings();
             });
-            services.AddMySqlLogger("kyubey-dex");
+            services.AddMySqlLogger("kyubey-dex", config["MySql"]);
 
             services.AddNodeServices(x =>
                 x.ProjectPath = "./Node"
@@ -54,7 +56,7 @@ namespace Andoromeda.Kyubey.Dex
             app.UseCors("Kyubey");
             app.UseErrorHandlingMiddleware();
             app.DexStaticFiles(env, configuration);
-            
+
             app.UseSignalR(x =>
             {
                 x.MapHub<SimpleWalletHub>("/signalr/simplewallet");

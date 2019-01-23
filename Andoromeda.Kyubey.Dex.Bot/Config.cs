@@ -6,11 +6,11 @@ namespace Andoromeda.Kyubey.Dex.Bot
     {
         public string MySql { get; set; }
 
-        public string PrivateKey { get; set; }
+        public string EncryptText { get; set; }
 
         public string TestAccount { get; set; }
 
-        public IEnumerable<Pair> Pairs { get; set; }
+        public IList<Pair> Pairs { get; set; }
 
         public string EmailAddress { get; set; }
 
@@ -27,6 +27,6 @@ namespace Andoromeda.Kyubey.Dex.Bot
 
         public string Symbol { get; set; }
 
-        public double Price { get; set; }
+        public double MaxPrice { get; set; }
     }
 }
